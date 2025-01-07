@@ -33,30 +33,35 @@ By using three variable K-Map, we can get the simplified expression for next sta
 The maximum possible groupings of adjacent ones are already shown in the figure. Therefore, the simplified expression for next state Qt+1t+1 is Q(t+1)=JQ(t)′+K′Q(t)Q(t+1)=JQ(t)′+K′Q(t)
 
 **Procedure**
-
-/* write all the steps invloved */
-.Type the program in Quartus software. 2.Compile and run the program. 3.Generate the RTL schematic and save the logic diagram. 4.Create nodes for inputs and outputs to generate the timing diagram. 5.For different input combinations generate the timing diagram
-
+```
+1.Type the program in Quartus software.
+2.Compile and run the program.
+3.Generate the RTL schematic and save the logic diagram.
+4.Create nodes for inputs and outputs to generate the timing diagram.
+5.For different input combinations generate the timing diagram
+```
 **PROGRAM**
 
 /* Program for flipflops and verify its truth table in quartus using Verilog programming. Developed by: JoaNN elizabeth RegisterNumber:24900609
 */
 ```
-module jkff(j,k,clk,q,qbar);
-input j,k,clk;
-output reg q,qbar;
-initial 
-begin
-q=1'b0;
-q=1'b1;
-end 
-
-always @(posedge clk)
-begin 
-q<=(j&~q)|(~k&q);
-qbar<=~q;
-end
+module jk_ff (j, k, clk, rst, q);
+  input j, k, clk, rst;
+  output reg q;
+  always @(posedge clk or posedge rst) begin
+    if (rst)
+      q <= 0; // Reset the flip-flop
+    else if (j == 0 && k == 0)
+      q <= q; // No change
+    else if (j == 0 && k == 1)
+      q <= 0; // Reset
+    else if (j == 1 && k == 0)
+      q <= 1; // Set
+    else if (j == 1 && k == 1)
+      q <= ~q; // Toggle
+  end
 endmodule
+
 ```
 **RTL LOGIC FOR FLIPFLOPS**
 ![Screenshot 2024-12-28 201030](https://github.com/user-attachments/assets/a8f89f30-7623-4671-924e-4c1fb43287c3)
